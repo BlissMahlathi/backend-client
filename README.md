@@ -56,3 +56,4 @@ All endpoints require a Bearer token in the `Authorization` header.
 - This Python backend provides all dynamic admin functionality
 - CORS is enabled for frontend communication
 - All endpoints require Supabase JWT authentication
+# backend-client

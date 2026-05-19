@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import datetime
@@ -33,7 +33,7 @@ supabase_client = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
 # ============================================================================
 # Authentication Middleware
 # ============================================================================
-async def verify_auth_token(authorization: Optional[str] = None):
+async def verify_auth_token(authorization: Optional[str] = Header(default=None)):
     """Verify JWT token from Authorization header"""
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization")
@@ -105,7 +105,7 @@ class GalleryUpdate(BaseModel):
 # Blog Posts Endpoints
 # ============================================================================
 @app.get("/api/admin/blogs")
-async def get_blogs(authorization: Optional[str] = None):
+async def get_blogs(authorization: Optional[str] = Header(default=None)):
     """Fetch all blog posts"""
     try:
         await verify_auth_token(authorization)
@@ -118,7 +118,7 @@ async def get_blogs(authorization: Optional[str] = None):
 
 
 @app.post("/api/admin/blogs")
-async def create_blog(post: PostCreate, authorization: Optional[str] = None):
+async def create_blog(post: PostCreate, authorization: Optional[str] = Header(default=None)):
     """Create a new blog post"""
     try:
         await verify_auth_token(authorization)
@@ -131,7 +131,7 @@ async def create_blog(post: PostCreate, authorization: Optional[str] = None):
 
 
 @app.put("/api/admin/blogs/{post_id}")
-async def update_blog(post_id: str, post: PostUpdate, authorization: Optional[str] = None):
+async def update_blog(post_id: str, post: PostUpdate, authorization: Optional[str] = Header(default=None)):
     """Update a blog post"""
     try:
         await verify_auth_token(authorization)
@@ -144,7 +144,7 @@ async def update_blog(post_id: str, post: PostUpdate, authorization: Optional[st
 
 
 @app.delete("/api/admin/blogs/{post_id}")
-async def delete_blog(post_id: str, authorization: Optional[str] = None):
+async def delete_blog(post_id: str, authorization: Optional[str] = Header(default=None)):
     """Delete a blog post"""
     try:
         await verify_auth_token(authorization)
@@ -160,7 +160,7 @@ async def delete_blog(post_id: str, authorization: Optional[str] = None):
 # Courses Endpoints
 # ============================================================================
 @app.get("/api/admin/courses")
-async def get_courses(authorization: Optional[str] = None):
+async def get_courses(authorization: Optional[str] = Header(default=None)):
     """Fetch all courses"""
     try:
         await verify_auth_token(authorization)
@@ -173,7 +173,7 @@ async def get_courses(authorization: Optional[str] = None):
 
 
 @app.post("/api/admin/courses")
-async def create_course(course: CourseCreate, authorization: Optional[str] = None):
+async def create_course(course: CourseCreate, authorization: Optional[str] = Header(default=None)):
     """Create a new course"""
     try:
         await verify_auth_token(authorization)
@@ -186,7 +186,7 @@ async def create_course(course: CourseCreate, authorization: Optional[str] = Non
 
 
 @app.put("/api/admin/courses/{course_id}")
-async def update_course(course_id: str, course: CourseUpdate, authorization: Optional[str] = None):
+async def update_course(course_id: str, course: CourseUpdate, authorization: Optional[str] = Header(default=None)):
     """Update a course"""
     try:
         await verify_auth_token(authorization)
@@ -199,7 +199,7 @@ async def update_course(course_id: str, course: CourseUpdate, authorization: Opt
 
 
 @app.delete("/api/admin/courses/{course_id}")
-async def delete_course(course_id: str, authorization: Optional[str] = None):
+async def delete_course(course_id: str, authorization: Optional[str] = Header(default=None)):
     """Delete a course"""
     try:
         await verify_auth_token(authorization)
@@ -215,7 +215,7 @@ async def delete_course(course_id: str, authorization: Optional[str] = None):
 # Deals Endpoints
 # ============================================================================
 @app.get("/api/admin/deals")
-async def get_deals(authorization: Optional[str] = None):
+async def get_deals(authorization: Optional[str] = Header(default=None)):
     """Fetch all deals"""
     try:
         await verify_auth_token(authorization)
@@ -228,7 +228,7 @@ async def get_deals(authorization: Optional[str] = None):
 
 
 @app.post("/api/admin/deals")
-async def create_deal(deal: DealCreate, authorization: Optional[str] = None):
+async def create_deal(deal: DealCreate, authorization: Optional[str] = Header(default=None)):
     """Create a new deal"""
     try:
         await verify_auth_token(authorization)
@@ -267,7 +267,7 @@ async def create_deal(deal: DealCreate, authorization: Optional[str] = None):
 
 
 @app.put("/api/admin/deals/{deal_id}")
-async def update_deal(deal_id: str, deal: DealUpdate, authorization: Optional[str] = None):
+async def update_deal(deal_id: str, deal: DealUpdate, authorization: Optional[str] = Header(default=None)):
     """Update a deal"""
     try:
         await verify_auth_token(authorization)
@@ -306,7 +306,7 @@ async def update_deal(deal_id: str, deal: DealUpdate, authorization: Optional[st
 
 
 @app.delete("/api/admin/deals/{deal_id}")
-async def delete_deal(deal_id: str, authorization: Optional[str] = None):
+async def delete_deal(deal_id: str, authorization: Optional[str] = Header(default=None)):
     """Delete a deal"""
     try:
         await verify_auth_token(authorization)
@@ -322,7 +322,7 @@ async def delete_deal(deal_id: str, authorization: Optional[str] = None):
 # Gallery Endpoints
 # ============================================================================
 @app.get("/api/admin/galleries")
-async def get_galleries(authorization: Optional[str] = None):
+async def get_galleries(authorization: Optional[str] = Header(default=None)):
     """Fetch all gallery items"""
     try:
         await verify_auth_token(authorization)
@@ -335,7 +335,7 @@ async def get_galleries(authorization: Optional[str] = None):
 
 
 @app.post("/api/admin/galleries")
-async def create_gallery(gallery: GalleryCreate, authorization: Optional[str] = None):
+async def create_gallery(gallery: GalleryCreate, authorization: Optional[str] = Header(default=None)):
     """Create a new gallery item"""
     try:
         await verify_auth_token(authorization)
@@ -348,7 +348,7 @@ async def create_gallery(gallery: GalleryCreate, authorization: Optional[str] = 
 
 
 @app.put("/api/admin/galleries/{gallery_id}")
-async def update_gallery(gallery_id: str, gallery: GalleryUpdate, authorization: Optional[str] = None):
+async def update_gallery(gallery_id: str, gallery: GalleryUpdate, authorization: Optional[str] = Header(default=None)):
     """Update a gallery item"""
     try:
         await verify_auth_token(authorization)
@@ -361,7 +361,7 @@ async def update_gallery(gallery_id: str, gallery: GalleryUpdate, authorization:
 
 
 @app.delete("/api/admin/galleries/{gallery_id}")
-async def delete_gallery(gallery_id: str, authorization: Optional[str] = None):
+async def delete_gallery(gallery_id: str, authorization: Optional[str] = Header(default=None)):
     """Delete a gallery item"""
     try:
         await verify_auth_token(authorization)
